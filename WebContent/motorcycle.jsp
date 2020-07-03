@@ -4,6 +4,7 @@
 <%@ page import="java.util.Collection, br.com.camposdeveloper.dealership.model.Motorcycle" %>
 
 <% 
+
 Collection<Motorcycle> motorcycles = (Collection<Motorcycle>) request.getAttribute("motorcycles");
 
 Object attSave = request.getAttribute("save");
@@ -13,9 +14,6 @@ Collection<String> errors = (Collection<String>) request.getAttribute("msgsErro"
 
 Object attDelete = request.getAttribute("delete");
 boolean respDelete = attDelete == null ? false : (boolean) attDelete;
-
-String respOperation = "operation_";
-respOperation += (String) request.getAttribute("operation");
 
 %>
 
@@ -31,7 +29,7 @@ respOperation += (String) request.getAttribute("operation");
 	</div>
 	
 	<div hidden="true" id="div-errors" style="margin: 20px;"  align="center">
-		<span id="span-errors">xxx</span>
+		<span id="span-errors"></span>
 	</div>
 	
 	<div>
@@ -60,7 +58,6 @@ respOperation += (String) request.getAttribute("operation");
 			System.out.println("Listing motorcycles...");
 			for (Motorcycle motorcycle : motorcycles) {
 		%>
-		
 		<li style="margin-top: 10px;"> 
 			<form action="/dealership-jsp/motorcycle" method="post">
 				<span><%= motorcycle.getId() %> - <%= motorcycle.getManufacturer() %> - <%= motorcycle.getModel() %></span>
@@ -68,7 +65,6 @@ respOperation += (String) request.getAttribute("operation");
 				<button>Delete</button>
 			</form>
 		</li>
-		
 		<%
 			}
 		} else {
@@ -78,12 +74,12 @@ respOperation += (String) request.getAttribute("operation");
 	</ul>
 	
 	<script type="text/javascript">
-	
-		var respOperation = '<%= respOperation %>';
+		
+		// Using Expression Language
+		var respOperation = 'operation_'+'${operation}';
 		var respSave = <%= respSave %>;
 		var errors = '<%= errors %>';
 		var errors = errors.replace('[', '').replace(']', '');
-		console.log(errors);
 		
 		var respDelete = <%= respDelete %>;
 		
