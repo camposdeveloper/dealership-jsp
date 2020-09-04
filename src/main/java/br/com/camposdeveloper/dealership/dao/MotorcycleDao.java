@@ -15,8 +15,27 @@ public final class MotorcycleDao {
 	private static Map<Integer, Motorcycle> map = new HashMap<>();
 	
 	public static Motorcycle save(Motorcycle motorcycle) {
+		if (motorcycle == null) throw new IllegalArgumentException("Motorcycle is null");
+		if (motorcycle.getId() == null) {
+			return MotorcycleDao.create(motorcycle);
+		} else {
+			Motorcycle registeredMotorcycle = MotorcycleDao.findById(motorcycle.getId());
+			if (registeredMotorcycle == null) throw new IllegalArgumentException("Motorcycle not found.");
+			registeredMotorcycle.setLicensePlate(motorcycle.getLicensePlate());
+			registeredMotorcycle.setManufacturer(motorcycle.getManufacturer());
+			registeredMotorcycle.setModel(motorcycle.getModel());
+			registeredMotorcycle.setYear(motorcycle.getYear());
+			return registeredMotorcycle;
+		}
+	}
+	
+	private static Motorcycle create(Motorcycle motorcycle) {
 		try {
 			Integer id = MotorcycleDao.collection.size() + 1;
+			boolean containsKey = map.containsKey(id);
+			while (containsKey) {
+				containsKey = map.containsKey(++id);
+			}
 			motorcycle.setId(id);
 			collection.add(motorcycle);
 			map.put(id, motorcycle);
