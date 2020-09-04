@@ -50,7 +50,7 @@ public final class MotorcycleDao {
 		return MotorcycleDao.collection;
 	}
 	
-	public static Motorcycle find(Integer id) {
+	public static Motorcycle findById(Integer id) {
 		return MotorcycleDao.map.get(id);
 	}
 
