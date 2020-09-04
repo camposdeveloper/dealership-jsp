@@ -10,7 +10,7 @@ Collection<Motorcycle> motorcycles = (Collection<Motorcycle>) request.getAttribu
 Object attSave = request.getAttribute("save");
 boolean respSave = attSave == null ? false : (boolean) attSave;
 
-Collection<String> errors = (Collection<String>) request.getAttribute("msgsErro");
+Collection<String> errors = (Collection<String>) request.getAttribute("errors");
 
 Object attDelete = request.getAttribute("delete");
 boolean respDelete = attDelete == null ? false : (boolean) attDelete;

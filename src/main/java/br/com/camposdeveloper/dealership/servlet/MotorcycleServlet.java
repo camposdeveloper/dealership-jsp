@@ -34,49 +34,21 @@ public final class MotorcycleServlet extends HttpServlet {
 		} else {
 			request.setAttribute("operation", "save");
 			Boolean save = false;
-			Motorcycle motorcycle = this.extractMotorcycle(request);
-			if (motorcycle != null) {
+			Motorcycle motorcycle = Motorcycle.extractFromHTTP(request);
+			Collection<String> errors = new ArrayList<String>();
+			if (motorcycle.isValidToSave(errors)) {
 				motorcycle = MotorcycleDao.save(motorcycle);
 				if (motorcycle != null && motorcycle.getId() != null) {
 					save = true;
 				}
+			} else {
+				request.setAttribute("errors", errors);
 			}
 			request.setAttribute("save", save);
 		}
 		Collection<Motorcycle> motorcycles = MotorcycleDao.find();
 		request.setAttribute("motorcycles", motorcycles);
 		request.getRequestDispatcher("/motorcycle.jsp").forward(request, response);
-	}
-	
-	private Motorcycle extractMotorcycle(HttpServletRequest request) {
-		
-		String manufacturer = request.getParameter("manufacturer");
-		String model = request.getParameter("model");
-		String year = request.getParameter("year");
-		String licensePlate = request.getParameter("licensePlate");
-		
-		Collection<String> msgsErro = new ArrayList<>();
-		
-		if(manufacturer == null || manufacturer.isEmpty()) {
-			msgsErro.add("Manufacturer is null!");
-		}
-		
-		if(model == null || model.isEmpty()) {
-			msgsErro.add("Model is null!");
-		}
-
-		if(year == null || year.isEmpty()) {
-			msgsErro.add("Year is null!");
-		}
-		
-		if(licensePlate == null || licensePlate.isEmpty()) {
-			msgsErro.add("License Plate is null!");
-		}
-		
-		request.setAttribute("msgsErro", msgsErro);
-		
-		return msgsErro.isEmpty() ? new Motorcycle(manufacturer, model, Integer.valueOf(year), licensePlate) : null;
-		
 	}
 
 }
